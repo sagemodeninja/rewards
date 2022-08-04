@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using RewardsApp.SQLite.Data;
 using RewardsApp.SQLite.Entities;
 using System;
 using System.Windows.Forms;

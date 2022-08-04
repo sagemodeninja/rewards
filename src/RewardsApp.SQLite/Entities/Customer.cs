@@ -42,6 +42,8 @@ namespace RewardsApp.SQLite.Entities
 
         public List<Customer> ReferredCustomers { get; set; }
 
+        public List<Transaction> Transactions { get; set; }
+
         #endregion NAVIGATION PROPERTIES
 
         public async Task Create()

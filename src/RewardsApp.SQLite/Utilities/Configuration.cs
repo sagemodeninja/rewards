@@ -27,13 +27,13 @@ namespace RewardsApp.SQLite.Utilities
         {
             Configuration configuration = new();
 
-            string file = GetFile();
+            var file = GetFile();
             if (File.Exists(file))
             {
-                using FileStream stream = File.Open(file, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                using StreamReader reader = new StreamReader(stream);
+                using var stream = File.Open(file, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                using var reader = new StreamReader(stream);
 
-                string content = reader.ReadToEnd();
+                var content = reader.ReadToEnd();
                 configuration = JsonSerializer.Deserialize<Configuration>(content);
             }
 
@@ -42,10 +42,10 @@ namespace RewardsApp.SQLite.Utilities
 
         public void Save()
         {
-            using FileStream stream = File.Open(GetFile(), FileMode.OpenOrCreate, FileAccess.Write);
+            using var stream = File.Open(GetFile(), FileMode.OpenOrCreate, FileAccess.Write);
 
-            string configuration = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
-            byte[] bytes = Encoding.UTF8.GetBytes(configuration);
+            var configuration = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+            var bytes = Encoding.UTF8.GetBytes(configuration);
 
             stream.Write(bytes, 0, bytes.Length);
         }

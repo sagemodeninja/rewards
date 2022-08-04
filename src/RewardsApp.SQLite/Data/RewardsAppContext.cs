@@ -12,32 +12,41 @@ namespace RewardsApp.SQLite.Data
 
         public DbSet<Customer> Customers { get; set; }
 
-        public string DbPath { get; private set; }
+        public DbSet<Transaction> Transactions { get; set; }
+
+        private string DbPath { get; }
 
         public RewardsAppContext()
         {
-            string localPath = Helper.GetRootPath();
+            var localPath = Helper.GetRootPath();
             DbPath = Path.Combine(localPath, "data.db");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            options.UseSqlite($"Data Source={DbPath}");
-        }
+            => options.UseSqlite($"Data Source={DbPath}");
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            var cardEntity = builder.Entity<Card>();
-
-            cardEntity.HasIndex(e => e.Number)
+            builder.Entity<Card>(entity =>
+            {
+                entity.HasIndex(e => e.Number)
                       .IsUnique();
-
-            cardEntity.Property(e => e.Status)
+                
+                entity.Property(e => e.Status)
                       .HasDefaultValue(GenericEntityStatus.Active);
+            });
 
             builder.Entity<Customer>()
                    .Property(e => e.Status)
                    .HasDefaultValue(GenericEntityStatus.Active);
+
+            builder.Entity<Transaction>(entity =>
+            {
+                entity.ToTable("Transaction");
+
+                entity.Property(e => e.Status)
+                      .HasDefaultValue(GenericEntityStatus.Active);
+            });
         }
     }
 }

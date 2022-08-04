@@ -30,7 +30,7 @@ namespace RewardsApp.SQLite.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigurationsForm));
-            this.editDatabaseBtn = new System.Windows.Forms.Button();
+            this.migrateDatabaseBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.pointPercentageNUD = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
@@ -39,7 +39,6 @@ namespace RewardsApp.SQLite.Forms
             this.label4 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.databaseStatusLbl = new System.Windows.Forms.Label();
             this.saveBackupFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.createBackupBtn = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -49,22 +48,23 @@ namespace RewardsApp.SQLite.Forms
             this.label8 = new System.Windows.Forms.Label();
             this.overridePasswordTxt = new System.Windows.Forms.TextBox();
             this.setOverridePasswordBtn = new System.Windows.Forms.Button();
+            this.databaseStatusLbl = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pointPercentageNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.referrerPointPercentageNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.referralPointsNUD)).BeginInit();
             this.SuspendLayout();
             // 
-            // editDatabaseBtn
+            // migrateDatabaseBtn
             // 
-            this.editDatabaseBtn.AutoSize = true;
-            this.editDatabaseBtn.Enabled = false;
-            this.editDatabaseBtn.Location = new System.Drawing.Point(303, 262);
-            this.editDatabaseBtn.Name = "editDatabaseBtn";
-            this.editDatabaseBtn.Size = new System.Drawing.Size(109, 25);
-            this.editDatabaseBtn.TabIndex = 4;
-            this.editDatabaseBtn.Text = "Create Database";
-            this.editDatabaseBtn.UseVisualStyleBackColor = true;
-            this.editDatabaseBtn.Click += new System.EventHandler(this.EditDatabaseBtn_Click);
+            this.migrateDatabaseBtn.AutoSize = true;
+            this.migrateDatabaseBtn.Enabled = false;
+            this.migrateDatabaseBtn.Location = new System.Drawing.Point(340, 261);
+            this.migrateDatabaseBtn.Name = "migrateDatabaseBtn";
+            this.migrateDatabaseBtn.Size = new System.Drawing.Size(109, 25);
+            this.migrateDatabaseBtn.TabIndex = 4;
+            this.migrateDatabaseBtn.Text = "Apply migrations";
+            this.migrateDatabaseBtn.UseVisualStyleBackColor = true;
+            this.migrateDatabaseBtn.Click += new System.EventHandler(this.EditDatabaseBtn_Click);
             // 
             // label1
             // 
@@ -143,17 +143,6 @@ namespace RewardsApp.SQLite.Forms
             this.label5.TabIndex = 24;
             this.label5.Text = "Database Status:";
             // 
-            // databaseStatusLbl
-            // 
-            this.databaseStatusLbl.AutoSize = true;
-            this.databaseStatusLbl.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.databaseStatusLbl.ForeColor = System.Drawing.Color.DarkRed;
-            this.databaseStatusLbl.Location = new System.Drawing.Point(218, 267);
-            this.databaseStatusLbl.Name = "databaseStatusLbl";
-            this.databaseStatusLbl.Size = new System.Drawing.Size(73, 15);
-            this.databaseStatusLbl.TabIndex = 25;
-            this.databaseStatusLbl.Text = "Not Created.";
-            // 
             // saveBackupFileDialog
             // 
             this.saveBackupFileDialog.DefaultExt = "db-backup";
@@ -185,7 +174,7 @@ namespace RewardsApp.SQLite.Forms
             // 
             this.restoreBackupBtn.AutoSize = true;
             this.restoreBackupBtn.Enabled = false;
-            this.restoreBackupBtn.Location = new System.Drawing.Point(335, 297);
+            this.restoreBackupBtn.Location = new System.Drawing.Point(340, 297);
             this.restoreBackupBtn.Name = "restoreBackupBtn";
             this.restoreBackupBtn.Size = new System.Drawing.Size(109, 25);
             this.restoreBackupBtn.TabIndex = 6;
@@ -237,12 +226,28 @@ namespace RewardsApp.SQLite.Forms
             this.setOverridePasswordBtn.UseVisualStyleBackColor = true;
             this.setOverridePasswordBtn.Click += new System.EventHandler(this.SetOverridePasswordBtn_Click);
             // 
+            // databaseStatusLbl
+            // 
+            this.databaseStatusLbl.ActiveLinkColor = System.Drawing.Color.DarkRed;
+            this.databaseStatusLbl.AutoSize = true;
+            this.databaseStatusLbl.ForeColor = System.Drawing.Color.DarkRed;
+            this.databaseStatusLbl.LinkColor = System.Drawing.Color.DarkRed;
+            this.databaseStatusLbl.Location = new System.Drawing.Point(218, 266);
+            this.databaseStatusLbl.Name = "databaseStatusLbl";
+            this.databaseStatusLbl.Size = new System.Drawing.Size(116, 15);
+            this.databaseStatusLbl.TabIndex = 31;
+            this.databaseStatusLbl.TabStop = true;
+            this.databaseStatusLbl.Text = "Migrations available.";
+            this.databaseStatusLbl.VisitedLinkColor = System.Drawing.Color.DarkRed;
+            this.databaseStatusLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DatabaseStatusLbl_LinkClicked);
+            // 
             // ConfigurationsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(528, 379);
+            this.Controls.Add(this.databaseStatusLbl);
             this.Controls.Add(this.setOverridePasswordBtn);
             this.Controls.Add(this.overridePasswordTxt);
             this.Controls.Add(this.label8);
@@ -250,13 +255,12 @@ namespace RewardsApp.SQLite.Forms
             this.Controls.Add(this.restoreBackupBtn);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.createBackupBtn);
-            this.Controls.Add(this.databaseStatusLbl);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.referrerPointPercentageNUD);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.editDatabaseBtn);
+            this.Controls.Add(this.migrateDatabaseBtn);
             this.Controls.Add(this.pointPercentageNUD);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
@@ -279,7 +283,7 @@ namespace RewardsApp.SQLite.Forms
 
         #endregion
 
-        private System.Windows.Forms.Button editDatabaseBtn;
+        private System.Windows.Forms.Button migrateDatabaseBtn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown pointPercentageNUD;
         private System.Windows.Forms.Label label2;
@@ -288,7 +292,6 @@ namespace RewardsApp.SQLite.Forms
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label databaseStatusLbl;
         private System.Windows.Forms.SaveFileDialog saveBackupFileDialog;
         private System.Windows.Forms.Button createBackupBtn;
         private System.Windows.Forms.Label label6;
@@ -298,5 +301,6 @@ namespace RewardsApp.SQLite.Forms
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox overridePasswordTxt;
         private System.Windows.Forms.Button setOverridePasswordBtn;
+        private System.Windows.Forms.LinkLabel databaseStatusLbl;
     }
 }

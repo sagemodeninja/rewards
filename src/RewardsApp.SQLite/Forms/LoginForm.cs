@@ -7,35 +7,35 @@ namespace RewardsApp.SQLite.Forms
 {
     public partial class LoginForm : Form
     {
-        public string AuthenticationURI { get; set; }
+        private const string TENANT = "9d6991bc-f819-474b-b741-b7e5ba25b776";
+        private const string RESPONSE_TYPE = "code";
+        private const string CLIENT_ID = "f0eb3c50-6869-43a5-bed7-d8f966f89d7a";
+        private const string SCOPE = "user.read offline_access";
 
-        public string RedirectPath { get; set; }
+        private string AuthenticationUri { get; set; }
+
+        private string RedirectPath { get; set; }
 
         public LoginForm()
         {
             InitializeComponent();
             InitializedAuthentication();
 
-            loginWebView.Source = new Uri(AuthenticationURI);
+            loginWebView.Source = new Uri(AuthenticationUri);
         }
 
         private void InitializedAuthentication()
         {
-            string tenant = "9d6991bc-f819-474b-b741-b7e5ba25b776";
-            string responseType = "code";
-            string clientId = "f0eb3c50-6869-43a5-bed7-d8f966f89d7a";
-            string scope = "user.read offline_access";
+            var authenticationServer = $"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/authorize";
+            var redirectUri = $"https://garyantier.com/apps/shibumi/nativeclient/redirect.php";
 
-            string authenticationServer = $"https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize";
-            string redirectURI = $"https://garyantier.com/apps/shibumi/nativeclient/redirect.php";
-
-            AuthenticationURI = $"{authenticationServer}?client_id={clientId}&response_type={responseType}&redirect_uri={redirectURI}&scope={scope}&prompt=select_account";
+            AuthenticationUri = $"{authenticationServer}?client_id={CLIENT_ID}&response_type={RESPONSE_TYPE}&redirect_uri={redirectUri}&scope={SCOPE}&prompt=select_account";
             RedirectPath = $"/apps/shibumi/nativeclient/redirect.php";
         }
 
         private void LoginWebView_SourceChanged(object sender, CoreWebView2SourceChangedEventArgs e)
         {
-            Uri source = loginWebView.Source;
+            var source = loginWebView.Source;
             Dictionary<string, string> parameters = null;
 
             if (!string.IsNullOrEmpty(source.Query))
@@ -47,7 +47,7 @@ namespace RewardsApp.SQLite.Forms
             {
                 if (parameters.ContainsKey("code"))
                 {
-                    HomeForm homeForm = new HomeForm(parameters["code"]);
+                    var homeForm = new HomeForm(parameters["code"]);
                     homeForm.Show();
                     this.Hide();
                 }
@@ -64,10 +64,10 @@ namespace RewardsApp.SQLite.Forms
         private Dictionary<string, string> ParseFragment(string queryString, char[] delimeters)
         {
             var parameters = new Dictionary<string, string>();
-            string[] pairs = queryString.Split(delimeters, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string pair in pairs)
+            var pairs = queryString.Split(delimeters, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var pair in pairs)
             {
-                string[] nameValaue = pair.Split(new char[] { '=' });
+                var nameValaue = pair.Split(new char[] { '=' });
                 parameters.Add(nameValaue[0], nameValaue[1]);
             }
             return parameters;

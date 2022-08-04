@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RewardsApp.SQLite.Data;
-using RewardsApp.SQLite.Entities;
 using RewardsApp.SQLite.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.IO.Compression;
-using System.Security.Cryptography;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,19 +15,18 @@ namespace RewardsApp.SQLite.Forms
     public partial class ConfigurationsForm : Form
     {
         private readonly string _userJobTitle;
-
         private bool _isConfigurationLoaded;
+        private IEnumerable<string> _pendingMigrations;
+        private bool _migrationsAvailable;
 
-        private bool _isDatabaseCreated;
-
-        public Configuration Configuration { get; private set; }
+        private Configuration Configuration { get; set; }
 
         public ConfigurationsForm(string userJobTitle)
         {
             InitializeComponent();
             _userJobTitle = userJobTitle;
             _isConfigurationLoaded = false;
-            _isDatabaseCreated = false;
+            _migrationsAvailable = false;
         }
 
         private async void ConfigurationsForm_Load(object sender, EventArgs e)
@@ -60,7 +58,6 @@ namespace RewardsApp.SQLite.Forms
             switch(_userJobTitle)
             {
                 case "application.admin":
-                    editDatabaseBtn.Enabled = true;
                     createBackupBtn.Enabled = true;
                     restoreBackupBtn.Enabled = true;
                     overridePasswordTxt.Enabled = true;
@@ -81,26 +78,18 @@ namespace RewardsApp.SQLite.Forms
 
         private async Task CheckDatabaseMigrated()
         {
-            try
-            {
-                using RewardsAppContext context = new();
-                Card cardCheck = await context.Cards.FirstOrDefaultAsync();
+            await using RewardsAppContext context = new();
 
-                _isDatabaseCreated = true;
-                databaseStatusLbl.Text = "Created.";
-                databaseStatusLbl.ForeColor = Color.DarkGreen;
-                editDatabaseBtn.Text = "Reset Database";
-            }
-            catch
-            {
-                _isDatabaseCreated = false;
-                databaseStatusLbl.Text = "Not Created.";
-                databaseStatusLbl.ForeColor = Color.Red;
-                editDatabaseBtn.Text = "Create Database";
+            _pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+            _migrationsAvailable = _pendingMigrations.Any();
 
-                createBackupBtn.Enabled = false;
-                restoreBackupBtn.Enabled = _userJobTitle == "application.admin";
-            }
+            var labelColor = _migrationsAvailable ? Color.DarkBlue : Color.DarkGreen;
+
+            databaseStatusLbl.Text = _migrationsAvailable ? "Migrations available." : "Up-to-date.";
+            databaseStatusLbl.ActiveLinkColor = labelColor;
+            databaseStatusLbl.VisitedLinkColor = labelColor;
+            databaseStatusLbl.LinkColor = labelColor;
+            migrateDatabaseBtn.Enabled = _migrationsAvailable;
         }
 
         private void PointPercentageNUD_ValueChanged(object sender, EventArgs e)
@@ -152,42 +141,38 @@ namespace RewardsApp.SQLite.Forms
             setOverridePasswordBtn.Enabled = false;
         }
 
+        private void DatabaseStatusLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (!_migrationsAvailable) return;
+
+            var builder = new StringBuilder("Pending migrations:\n\n");
+
+            foreach (var migration in _pendingMigrations)
+            {
+                builder.AppendLine(migration);
+            }
+
+            MessageBox.Show(builder.ToString());
+        }
+
         private void EditDatabaseBtn_Click(object sender, EventArgs e)
         {
-            editDatabaseBtn.Enabled = false;
+            var response = MessageBox.Show(
+                "Are you sure to apply migrations?", 
+                "Apply Migrations", 
+                MessageBoxButtons.OKCancel);
 
-            try
-            {
-                if(!_isDatabaseCreated)
-                {
-                    using RewardsAppContext context = new();
-                    context.Database.Migrate();
+            if (response == DialogResult.Cancel)
+                return;
 
-                    _isDatabaseCreated = true;
-                    databaseStatusLbl.Text = "Created.";
-                    databaseStatusLbl.ForeColor = Color.DarkGreen;
-                    editDatabaseBtn.Text = "Reset Database";
+            using RewardsAppContext context = new();
+            context.Database.Migrate();
 
-                    createBackupBtn.Enabled = true;
-                    restoreBackupBtn.Enabled = false;
-                }
-                else
-                {
-                    var dbFile = Path.Combine(Helper.GetRootPath(), "data.db");
-                    File.Delete(dbFile);
-
-                    using RewardsAppContext context = new();
-                    context.Database.Migrate();
-
-                    databaseStatusLbl.Text = "Reseted.";
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            
-            editDatabaseBtn.Enabled = true;
+            databaseStatusLbl.Text = "Up-to-date.";
+            databaseStatusLbl.ActiveLinkColor = Color.DarkGreen;
+            databaseStatusLbl.VisitedLinkColor = Color.DarkGreen;
+            databaseStatusLbl.LinkColor = Color.DarkGreen;
+            migrateDatabaseBtn.Enabled = false;
         }
 
         private void CreateBackupBtn_Click(object sender, EventArgs e)
