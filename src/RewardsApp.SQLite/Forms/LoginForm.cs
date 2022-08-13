@@ -49,13 +49,13 @@ namespace RewardsApp.SQLite.Forms
                 {
                     var homeForm = new HomeForm(parameters["code"]);
                     homeForm.Show();
-                    this.Hide();
+                    Hide();
                 }
                 else if (parameters.ContainsKey("error_description"))
                 {
                     //new LoginErrorDialog(parameters["error_description"]).Show();
                     MessageBox.Show(parameters["error_description"]);
-                    this.Hide();
+                    Hide();
                 }
             }
         }

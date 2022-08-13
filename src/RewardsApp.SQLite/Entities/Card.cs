@@ -44,8 +44,8 @@ namespace RewardsApp.SQLite.Entities
 
         public async Task Delete()
         {
-            this.Status = GenericEntityStatus.Inactive;
-            await this.Update();
+            Status = GenericEntityStatus.Inactive;
+            await Update();
         }
 
         public static async Task<List<Card>> GetAll()

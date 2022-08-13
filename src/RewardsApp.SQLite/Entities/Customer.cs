@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RewardsApp.SQLite.Data;
+using RewardsApp.SQLite.Migrations;
 using RewardsApp.SQLite.Utilities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace RewardsApp.SQLite.Entities
@@ -63,8 +65,17 @@ namespace RewardsApp.SQLite.Entities
 
         public async Task Delete()
         {
-            this.Status = GenericEntityStatus.Inactive;
-            await this.Update();
+            Status = GenericEntityStatus.Inactive;
+            await Update();
+        }
+
+        public async Task Reset()
+        {
+            Points = 0;
+            await Update();
+
+            // Transaction
+            await RecordResetTransaction();
         }
 
         public static async Task<List<Customer>> GetAll()
@@ -82,7 +93,10 @@ namespace RewardsApp.SQLite.Entities
             await using RewardsAppContext context = new();
 
             context.Attach(this);
-            this.Points += points;
+            Points += points;
+
+            // Transaction
+            await RecordTransaction(TransactionType.EarnPoints, points, context);
 
             await context.SaveChangesAsync();
         }
@@ -93,6 +107,9 @@ namespace RewardsApp.SQLite.Entities
 
             var customer = await context.Customers.FirstOrDefaultAsync(c => c.Id == customerId);
             customer.Points += points;
+            
+            // Transaction
+            await customer.RecordTransaction(TransactionType.EarnPoints, points, context);
 
             await context.SaveChangesAsync();
         }
@@ -102,10 +119,54 @@ namespace RewardsApp.SQLite.Entities
             await using RewardsAppContext context = new();
 
             context.Attach(this);
-            this.Points -= points;
-            this.LastRedeemed = DateTime.Now;
-            this.LastRedeemedPoints = points;
+            Points -= points;
+            LastRedeemed = DateTime.UtcNow;
+            LastRedeemedPoints = points;
+            
+            // Transaction
+            await RecordTransaction(TransactionType.RedeemPoints, points, context);
 
+            await context.SaveChangesAsync();
+        }
+
+        private async Task RecordTransaction(TransactionType transactionType, decimal points, RewardsAppContext context)
+        {
+            var lastTransaction = await context.Transactions
+                                               .OrderBy(trans => trans.Id)
+                                               .LastOrDefaultAsync();
+
+            var lastBalance = lastTransaction?.Balance ?? 0;
+            var balance = transactionType switch
+            {
+                TransactionType.EarnPoints => lastBalance + points,
+                _ => lastBalance - points
+            };
+
+            var transaction = new Transaction
+            {
+                CustomerId = Id,
+                TransactionType = transactionType,
+                Points = points,
+                Balance = balance,
+                Timestamp = DateTime.UtcNow
+            };
+
+            context.Transactions.Add(transaction);
+        }
+
+        private async Task RecordResetTransaction()
+        {
+            var transaction = new Transaction
+            {
+                CustomerId = Id,
+                TransactionType = TransactionType.Reset,
+                Points = 0,
+                Balance = 0,
+                Timestamp = DateTime.UtcNow
+            };
+
+            await using RewardsAppContext context = new();
+            context.Transactions.Add(transaction);
             await context.SaveChangesAsync();
         }
     }

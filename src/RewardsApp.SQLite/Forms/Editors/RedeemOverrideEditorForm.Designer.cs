@@ -81,7 +81,7 @@ namespace RewardsApp.SQLite.Forms.Editors
             this.MinimizeBox = false;
             this.Name = "RedeemOverrideEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Redeem Override";
+            this.Text = "Override";
             this.ResumeLayout(false);
             this.PerformLayout();
 

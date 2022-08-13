@@ -17,14 +17,14 @@ namespace RewardsApp.SQLite.Forms.Editors
             _customer = customer;
         }
 
-        private void RedeemPointsEditorForm_Load(object sender, System.EventArgs e)
+        private void RedeemPointsEditorForm_Load(object sender, EventArgs e)
         {
             customerNameLbl.Text = $"{_customer.LastName}, {_customer.FirstName}";
             currentPointsTxt.Text = _customer.Points.ToString("#,##0.00");
             remainingPointsTxt.Text = "0.00";
         }
 
-        private void AmountTxt_TextChanged(object sender, System.EventArgs e)
+        private void AmountTxt_TextChanged(object sender, EventArgs e)
         {
             var amountString = amountTxt.Text;
             if (string.IsNullOrWhiteSpace(amountString))
@@ -66,7 +66,7 @@ namespace RewardsApp.SQLite.Forms.Editors
                 {
                     await _customer.RedeemPoints(amount);
                     _onRedeemedAction.Invoke(_customer);
-                    this.Close();
+                    Close();
                 }
                 else
                 {
@@ -81,9 +81,9 @@ namespace RewardsApp.SQLite.Forms.Editors
 
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            if (Form.ModifierKeys == Keys.None && keyData == Keys.Escape)
+            if (ModifierKeys == Keys.None && keyData == Keys.Escape)
             {
-                this.Close();
+                Close();
                 return true;
             }
             return base.ProcessDialogKey(keyData);

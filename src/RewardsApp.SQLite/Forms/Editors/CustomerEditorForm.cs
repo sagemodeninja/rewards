@@ -113,7 +113,7 @@ namespace RewardsApp.SQLite.Forms.Editors
                 }
 
                 CustomerCreatedAction.Invoke(customer);
-                this.Close();
+                Close();
             }
             catch (Exception ex)
             {
@@ -131,14 +131,14 @@ namespace RewardsApp.SQLite.Forms.Editors
 
             await _customer.Update();
             CustomerEditedAction.Invoke(_customer);
-            this.Close();
+            Close();
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            if (Form.ModifierKeys == Keys.None && keyData == Keys.Escape)
+            if (ModifierKeys == Keys.None && keyData == Keys.Escape)
             {
-                this.Close();
+                Close();
                 return true;
             }
             return base.ProcessDialogKey(keyData);

@@ -27,7 +27,7 @@ namespace RewardsApp.SQLite.Forms.Editors
         {
             _isEdit = true;
             _card = card;
-            this.Text = "Edit Number";
+            Text = "Edit Number";
             cardNumberTxt.Text = card.Number;
             keyboardShortcutsLbl.Text = "Press Enter to edit or Esc to cancel.";
         }
@@ -54,7 +54,7 @@ namespace RewardsApp.SQLite.Forms.Editors
                     _card.Number = cardNumber;
                     await _card.Update();
                     CardEditedAction.Invoke(_card);
-                    this.Close();
+                    Close();
                 }
             }
             catch (DbUpdateException ex)
@@ -70,9 +70,9 @@ namespace RewardsApp.SQLite.Forms.Editors
 
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            if (Form.ModifierKeys == Keys.None && keyData == Keys.Escape)
+            if (ModifierKeys == Keys.None && keyData == Keys.Escape)
             {
-                this.Close();
+                Close();
                 return true;
             }
             return base.ProcessDialogKey(keyData);

@@ -13,6 +13,11 @@
         /// <summary>
         /// Customer redeemed their points.
         /// </summary>
-        RedeemPoints
+        RedeemPoints,
+
+        /// <summary>
+        /// Customer's points were manually rest to 0.
+        /// </summary>
+        Reset
     }
 }

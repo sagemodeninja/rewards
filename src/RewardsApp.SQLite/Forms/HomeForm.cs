@@ -20,13 +20,13 @@ namespace RewardsApp.SQLite.Forms
 
         private bool _isRewardStage;
 
-        public Configuration Configuration { get; private set; }
+        private Configuration Configuration { get; set; }
 
-        public Customer CurrentCustomer { get; private set; }
+        private Customer CurrentCustomer { get; set; }
 
-        public decimal EarnedPoints { get; private set; }
+        private decimal EarnedPoints { get; set; }
 
-        public decimal ReferrerEarnedPoints { get; private set; }
+        private decimal ReferrerEarnedPoints { get; set; }
 
         public HomeForm(string authorizationCode)
         {
@@ -176,7 +176,7 @@ namespace RewardsApp.SQLite.Forms
 
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            if (Form.ModifierKeys == Keys.None && keyData == Keys.Escape && _isRewardStage)
+            if (ModifierKeys == Keys.None && keyData == Keys.Escape && _isRewardStage)
             {
                 SwitchToCardNumberStage();
                 return true;

@@ -31,6 +31,11 @@ namespace RewardsApp.SQLite.Interfaces
         decimal Points { get; set; }
 
         /// <summary>
+        /// Balance after transaction.
+        /// </summary>
+        decimal Balance { get; set; }
+
+        /// <summary>
         /// Status of transaction.
         /// </summary>
         GenericEntityStatus Status { get; set; }

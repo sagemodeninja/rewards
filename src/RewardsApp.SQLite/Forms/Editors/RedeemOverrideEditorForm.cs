@@ -15,7 +15,7 @@ namespace RewardsApp.SQLite.Forms.Editors
 
         public RedeemOverrideResult ShowOverride()
         {
-            this.ShowDialog();
+            ShowDialog();
             return _result;
         }
 
@@ -31,14 +31,14 @@ namespace RewardsApp.SQLite.Forms.Editors
             var overrideHash = configuration.OverridePassword;
 
             _result = challengeHash.Equals(overrideHash) ? RedeemOverrideResult.Success : RedeemOverrideResult.Failed;
-            this.Close();
+            Close();
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            if (Form.ModifierKeys == Keys.None && keyData == Keys.Escape)
+            if (ModifierKeys == Keys.None && keyData == Keys.Escape)
             {
-                this.Close();
+                Close();
                 return true;
             }
             return base.ProcessDialogKey(keyData);

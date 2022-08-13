@@ -48,6 +48,10 @@ namespace RewardsApp.SQLite.Forms
             this.redeemMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.transactionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.orderByCbo = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.resetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.customersDGV)).BeginInit();
             this.rowContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -164,30 +168,65 @@ namespace RewardsApp.SQLite.Forms
             this.rowContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.redeemMenuItem,
             this.editMenuItem,
-            this.deleteMenuItem});
+            this.resetMenuItem,
+            this.deleteMenuItem,
+            this.transactionMenuItem});
             this.rowContextMenu.Name = "rowContextMenu";
             this.rowContextMenu.ShowImageMargin = false;
-            this.rowContextMenu.Size = new System.Drawing.Size(93, 70);
+            this.rowContextMenu.Size = new System.Drawing.Size(156, 136);
             this.rowContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.RowContextMenu_Opening);
             this.rowContextMenu.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.RowContextMenu_ItemClicked);
             // 
             // redeemMenuItem
             // 
             this.redeemMenuItem.Name = "redeemMenuItem";
-            this.redeemMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.redeemMenuItem.Size = new System.Drawing.Size(155, 22);
             this.redeemMenuItem.Text = "&Redeem";
             // 
             // editMenuItem
             // 
             this.editMenuItem.Name = "editMenuItem";
-            this.editMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.editMenuItem.Size = new System.Drawing.Size(155, 22);
             this.editMenuItem.Text = "&Edit";
             // 
             // deleteMenuItem
             // 
             this.deleteMenuItem.Name = "deleteMenuItem";
-            this.deleteMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.deleteMenuItem.Size = new System.Drawing.Size(155, 22);
             this.deleteMenuItem.Text = "&Delete";
+            // 
+            // transactionMenuItem
+            // 
+            this.transactionMenuItem.Name = "transactionMenuItem";
+            this.transactionMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.transactionMenuItem.Text = "View &Transactions";
+            // 
+            // orderByCbo
+            // 
+            this.orderByCbo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.orderByCbo.FormattingEnabled = true;
+            this.orderByCbo.Items.AddRange(new object[] {
+            "Full Name",
+            "Card No."});
+            this.orderByCbo.Location = new System.Drawing.Point(963, 12);
+            this.orderByCbo.Name = "orderByCbo";
+            this.orderByCbo.Size = new System.Drawing.Size(121, 23);
+            this.orderByCbo.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(901, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 15);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Order By:";
+            // 
+            // resetMenuItem
+            // 
+            this.resetMenuItem.Name = "resetMenuItem";
+            this.resetMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.resetMenuItem.Text = "Re&set";
             // 
             // CustomersForm
             // 
@@ -195,6 +234,8 @@ namespace RewardsApp.SQLite.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1177, 560);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.orderByCbo);
             this.Controls.Add(this.customersDGV);
             this.Controls.Add(this.refreshBtn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -207,6 +248,7 @@ namespace RewardsApp.SQLite.Forms
             ((System.ComponentModel.ISupportInitialize)(this.customersDGV)).EndInit();
             this.rowContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -228,5 +270,9 @@ namespace RewardsApp.SQLite.Forms
         private System.Windows.Forms.DataGridViewTextBoxColumn Points;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastRedeemedPoints;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastRedeemed;
+        private System.Windows.Forms.ToolStripMenuItem transactionMenuItem;
+        private System.Windows.Forms.ComboBox orderByCbo;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem resetMenuItem;
     }
 }
