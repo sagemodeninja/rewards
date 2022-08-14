@@ -52,14 +52,14 @@ namespace RewardsApp.SQLite.Forms
             credentials.AddScopes("User.Read");
 
             AuthProvider provider = new(authEndpoint, credentials);
-            await provider.RequestTokenAsync();
+            await provider.RequestAccessTokenAsync();
 
             return provider;
         }
 
         private async Task LoadProfileAsync(AuthProvider authProvider)
         {
-            HTTPContent content = new()
+            HttpContent content = new()
             {
                 AuthProvider = authProvider
             };
