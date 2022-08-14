@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="AgilityFramework.Http" Version="2.3.7-alpha" />
+    <PackageReference Include="ClosedXML" Version="0.96.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

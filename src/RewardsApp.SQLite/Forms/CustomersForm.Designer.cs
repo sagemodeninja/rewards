@@ -35,11 +35,11 @@ namespace RewardsApp.SQLite.Forms
             this.refreshBtn = new System.Windows.Forms.Button();
             this.customersDGV = new System.Windows.Forms.DataGridView();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CardNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Birthdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ContactNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CardNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Referrer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Points = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LastRedeemedPoints = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,11 +47,13 @@ namespace RewardsApp.SQLite.Forms
             this.rowContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.redeemMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.transactionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderByCbo = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.resetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label7 = new System.Windows.Forms.Label();
+            this.generateReportBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.customersDGV)).BeginInit();
             this.rowContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -59,7 +61,7 @@ namespace RewardsApp.SQLite.Forms
             // refreshBtn
             // 
             this.refreshBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.refreshBtn.Location = new System.Drawing.Point(1090, 12);
+            this.refreshBtn.Location = new System.Drawing.Point(941, 15);
             this.refreshBtn.Name = "refreshBtn";
             this.refreshBtn.Size = new System.Drawing.Size(75, 25);
             this.refreshBtn.TabIndex = 0;
@@ -78,11 +80,11 @@ namespace RewardsApp.SQLite.Forms
             this.customersDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.customersDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Id,
+            this.CardNo,
             this.FullName,
             this.Birthdate,
             this.ContactNumber,
             this.Email,
-            this.CardNo,
             this.Referrer,
             this.Points,
             this.LastRedeemedPoints,
@@ -105,7 +107,14 @@ namespace RewardsApp.SQLite.Forms
             this.Id.HeaderText = "Id";
             this.Id.Name = "Id";
             this.Id.ReadOnly = true;
+            this.Id.Visible = false;
             this.Id.Width = 50;
+            // 
+            // CardNo
+            // 
+            this.CardNo.HeaderText = "Card No.";
+            this.CardNo.Name = "CardNo";
+            this.CardNo.ReadOnly = true;
             // 
             // FullName
             // 
@@ -130,12 +139,6 @@ namespace RewardsApp.SQLite.Forms
             this.Email.HeaderText = "Email";
             this.Email.Name = "Email";
             this.Email.ReadOnly = true;
-            // 
-            // CardNo
-            // 
-            this.CardNo.HeaderText = "Card No.";
-            this.CardNo.Name = "CardNo";
-            this.CardNo.ReadOnly = true;
             // 
             // Referrer
             // 
@@ -173,32 +176,38 @@ namespace RewardsApp.SQLite.Forms
             this.transactionMenuItem});
             this.rowContextMenu.Name = "rowContextMenu";
             this.rowContextMenu.ShowImageMargin = false;
-            this.rowContextMenu.Size = new System.Drawing.Size(156, 136);
+            this.rowContextMenu.Size = new System.Drawing.Size(143, 114);
             this.rowContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.RowContextMenu_Opening);
             this.rowContextMenu.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.RowContextMenu_ItemClicked);
             // 
             // redeemMenuItem
             // 
             this.redeemMenuItem.Name = "redeemMenuItem";
-            this.redeemMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.redeemMenuItem.Size = new System.Drawing.Size(142, 22);
             this.redeemMenuItem.Text = "&Redeem";
             // 
             // editMenuItem
             // 
             this.editMenuItem.Name = "editMenuItem";
-            this.editMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.editMenuItem.Size = new System.Drawing.Size(142, 22);
             this.editMenuItem.Text = "&Edit";
+            // 
+            // resetMenuItem
+            // 
+            this.resetMenuItem.Name = "resetMenuItem";
+            this.resetMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.resetMenuItem.Text = "Re&set";
             // 
             // deleteMenuItem
             // 
             this.deleteMenuItem.Name = "deleteMenuItem";
-            this.deleteMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.deleteMenuItem.Size = new System.Drawing.Size(142, 22);
             this.deleteMenuItem.Text = "&Delete";
             // 
             // transactionMenuItem
             // 
             this.transactionMenuItem.Name = "transactionMenuItem";
-            this.transactionMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.transactionMenuItem.Size = new System.Drawing.Size(142, 22);
             this.transactionMenuItem.Text = "View &Transactions";
             // 
             // orderByCbo
@@ -208,7 +217,7 @@ namespace RewardsApp.SQLite.Forms
             this.orderByCbo.Items.AddRange(new object[] {
             "Full Name",
             "Card No."});
-            this.orderByCbo.Location = new System.Drawing.Point(963, 12);
+            this.orderByCbo.Location = new System.Drawing.Point(814, 17);
             this.orderByCbo.Name = "orderByCbo";
             this.orderByCbo.Size = new System.Drawing.Size(121, 23);
             this.orderByCbo.TabIndex = 2;
@@ -216,17 +225,32 @@ namespace RewardsApp.SQLite.Forms
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(901, 16);
+            this.label1.Location = new System.Drawing.Point(752, 20);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 15);
             this.label1.TabIndex = 3;
             this.label1.Text = "Order By:";
             // 
-            // resetMenuItem
+            // label7
             // 
-            this.resetMenuItem.Name = "resetMenuItem";
-            this.resetMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.resetMenuItem.Text = "Re&set";
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label7.ForeColor = System.Drawing.Color.DimGray;
+            this.label7.Location = new System.Drawing.Point(12, 20);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(240, 15);
+            this.label7.TabIndex = 24;
+            this.label7.Text = "Right-click each item to show more options.";
+            // 
+            // generateReportBtn
+            // 
+            this.generateReportBtn.Location = new System.Drawing.Point(1022, 16);
+            this.generateReportBtn.Name = "generateReportBtn";
+            this.generateReportBtn.Size = new System.Drawing.Size(142, 23);
+            this.generateReportBtn.TabIndex = 25;
+            this.generateReportBtn.Text = "Generate Report";
+            this.generateReportBtn.UseVisualStyleBackColor = true;
+            this.generateReportBtn.Click += new System.EventHandler(this.generateReportBtn_Click);
             // 
             // CustomersForm
             // 
@@ -234,6 +258,8 @@ namespace RewardsApp.SQLite.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1177, 560);
+            this.Controls.Add(this.generateReportBtn);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.orderByCbo);
             this.Controls.Add(this.customersDGV);
@@ -260,19 +286,21 @@ namespace RewardsApp.SQLite.Forms
         private System.Windows.Forms.ToolStripMenuItem redeemMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteMenuItem;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FullName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Birthdate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ContactNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Email;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CardNo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Referrer;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Points;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LastRedeemedPoints;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LastRedeemed;
         private System.Windows.Forms.ToolStripMenuItem transactionMenuItem;
         private System.Windows.Forms.ComboBox orderByCbo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem resetMenuItem;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button generateReportBtn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CardNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FullName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Birthdate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ContactNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Email;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Referrer;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Points;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LastRedeemedPoints;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LastRedeemed;
     }
 }

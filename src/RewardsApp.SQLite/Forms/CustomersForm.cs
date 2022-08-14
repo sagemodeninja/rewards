@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using ClosedXML.Excel;
+using System.Diagnostics;
 
 namespace RewardsApp.SQLite.Forms
 {
@@ -46,13 +48,12 @@ namespace RewardsApp.SQLite.Forms
             
             var singaporeTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Singapore Standard Time");
             DateTime? localLastRedeemed = customer.LastRedeemed != null ? TimeZoneInfo.ConvertTimeFromUtc((DateTime)customer.LastRedeemed, singaporeTimeZone) : null;
-
-            cells[0].Value = customer.Id;
-            cells[1].Value = CultureInfo.CurrentCulture.TextInfo.ToTitleCase($"{customer.LastName}, {customer.FirstName}".ToLower());
-            cells[2].Value = customer.Birthdate.ToString("MMM. dd, yyyy");
-            cells[3].Value = customer.ContactNumber;
-            cells[4].Value = customer.Email;
-            cells[5].Value = card.Number;
+            
+            cells[1].Value = card.Number;
+            cells[2].Value = CultureInfo.CurrentCulture.TextInfo.ToTitleCase($"{customer.LastName}, {customer.FirstName}".ToLower());
+            cells[3].Value = customer.Birthdate.ToString("MMM. dd, yyyy");
+            cells[4].Value = customer.ContactNumber;
+            cells[5].Value = customer.Email;
             cells[6].Value = referrer is null ? "None" : $"{referrer.LastName}, {referrer.FirstName}";
             cells[7].Value = customer.Points.ToString("#,##0.00");
             cells[8].Value = customer.LastRedeemedPoints.ToString("#,##0.00");
@@ -165,6 +166,76 @@ namespace RewardsApp.SQLite.Forms
             }
 
             return base.ProcessDialogKey(keyData);
+        }
+
+        private void generateReportBtn_Click(object sender, EventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                DefaultExt = "xlsx",
+                Filter = @"Excel Workbook (*.xlsx)|*.xlsx",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                FileName = $"Customers {DateTime.Now:yyyy_MM_dd_HH_mm}"
+            };
+
+            var result = saveFileDialog.ShowDialog();
+
+            if (result != DialogResult.OK) return;
+
+            var excelFile = saveFileDialog.FileName;
+
+            GenerateExcelReport(excelFile);
+            Process.Start("explorer.exe", excelFile);
+        }
+        
+        private void GenerateExcelReport(string filePath)
+        {
+            using var workbook = new XLWorkbook();
+
+            workbook.Properties.Author = "Shibumi Software";
+            workbook.Properties.Company = "Blissful Cafe Cebu";
+
+            var worksheet = workbook.Worksheets.Add();
+
+            // Headers...
+            var headerRow = worksheet.Row(1);
+            var columnCount = customersDGV.Columns.Count;
+            var rowCount = customersDGV.Rows.Count;
+
+            for (var index = 1; index < columnCount; index++)
+            {
+                var headerText = customersDGV.Columns[index].HeaderText;
+                headerRow.Cell(index)
+                         .SetValue(headerText)
+                         .Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center)
+                         .Font.SetBold(true);
+
+                if (headerText.ToLower().Contains("no") || headerText.ToLower().Contains("date"))
+                    worksheet.Column(index).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+            }
+
+            // Body
+            for (var rowIndex = 0; rowIndex < rowCount; rowIndex++)
+            {
+                var gridViewRow = customersDGV.Rows[rowIndex];
+                // 2=Excel row is non-zero + offset for header.
+                var excelRow = worksheet.Row(rowIndex + 2);
+
+                for (var colIndex = 1; colIndex < columnCount; colIndex++)
+                {
+                    var value = gridViewRow.Cells[colIndex].Value;
+                    var excelCell = excelRow.Cell(colIndex)
+                                            .SetValue(value);
+
+                    if (value?.GetType() == typeof(decimal))
+                        excelCell.Style.NumberFormat.SetFormat("#,##0.00");
+                }
+            }
+
+            worksheet.Columns().AdjustToContents();
+
+            // Save Excel file...
+            workbook.SaveAs(filePath);
         }
     }
 }

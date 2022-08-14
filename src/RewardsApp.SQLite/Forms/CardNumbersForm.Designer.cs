@@ -43,6 +43,7 @@ namespace RewardsApp.SQLite.Forms
             this.deleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNumberBtn = new System.Windows.Forms.Button();
             this.refreshBtn = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.cardsDGV)).BeginInit();
             this.rowContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -150,12 +151,24 @@ namespace RewardsApp.SQLite.Forms
             this.refreshBtn.UseVisualStyleBackColor = true;
             this.refreshBtn.Click += new System.EventHandler(this.RefreshBtn_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label7.ForeColor = System.Drawing.Color.DimGray;
+            this.label7.Location = new System.Drawing.Point(12, 22);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(240, 15);
+            this.label7.TabIndex = 25;
+            this.label7.Text = "Right-click each item to show more options.";
+            // 
             // CardNumbersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1177, 560);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.refreshBtn);
             this.Controls.Add(this.addNumberBtn);
             this.Controls.Add(this.cardsDGV);
@@ -185,5 +198,6 @@ namespace RewardsApp.SQLite.Forms
         private System.Windows.Forms.DataGridViewTextBoxColumn Number;
         private System.Windows.Forms.DataGridViewTextBoxColumn Taken;
         private System.Windows.Forms.DataGridViewTextBoxColumn Owner;
+        private System.Windows.Forms.Label label7;
     }
 }
