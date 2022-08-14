@@ -34,16 +34,6 @@ namespace RewardsApp.SQLite.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomersForm));
             this.refreshBtn = new System.Windows.Forms.Button();
             this.customersDGV = new System.Windows.Forms.DataGridView();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CardNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Birthdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ContactNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Referrer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Points = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastRedeemedPoints = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastRedeemed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rowContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.redeemMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,6 +44,16 @@ namespace RewardsApp.SQLite.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.generateReportBtn = new System.Windows.Forms.Button();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CardNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Birthdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ContactNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Referrer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Points = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastRedeemedPoints = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastRedeemed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.customersDGV)).BeginInit();
             this.rowContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -99,6 +99,92 @@ namespace RewardsApp.SQLite.Forms
             this.customersDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.customersDGV.Size = new System.Drawing.Size(1153, 494);
             this.customersDGV.TabIndex = 1;
+            // 
+            // rowContextMenu
+            // 
+            this.rowContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.redeemMenuItem,
+            this.editMenuItem,
+            this.resetMenuItem,
+            this.deleteMenuItem,
+            this.transactionMenuItem});
+            this.rowContextMenu.Name = "rowContextMenu";
+            this.rowContextMenu.ShowImageMargin = false;
+            this.rowContextMenu.Size = new System.Drawing.Size(143, 114);
+            this.rowContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.RowContextMenu_Opening);
+            this.rowContextMenu.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.RowContextMenu_ItemClicked);
+            // 
+            // redeemMenuItem
+            // 
+            this.redeemMenuItem.Name = "redeemMenuItem";
+            this.redeemMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.redeemMenuItem.Text = "&Redeem";
+            // 
+            // editMenuItem
+            // 
+            this.editMenuItem.Name = "editMenuItem";
+            this.editMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.editMenuItem.Text = "&Edit";
+            // 
+            // resetMenuItem
+            // 
+            this.resetMenuItem.Name = "resetMenuItem";
+            this.resetMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.resetMenuItem.Text = "Re&set";
+            // 
+            // deleteMenuItem
+            // 
+            this.deleteMenuItem.Name = "deleteMenuItem";
+            this.deleteMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.deleteMenuItem.Text = "&Delete";
+            // 
+            // transactionMenuItem
+            // 
+            this.transactionMenuItem.Name = "transactionMenuItem";
+            this.transactionMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.transactionMenuItem.Text = "View &Transactions";
+            // 
+            // orderByCbo
+            // 
+            this.orderByCbo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.orderByCbo.FormattingEnabled = true;
+            this.orderByCbo.Items.AddRange(new object[] {
+            "Card No.",
+            "Full Name"});
+            this.orderByCbo.Location = new System.Drawing.Point(814, 17);
+            this.orderByCbo.Name = "orderByCbo";
+            this.orderByCbo.Size = new System.Drawing.Size(121, 23);
+            this.orderByCbo.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(752, 20);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 15);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Order By:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label7.ForeColor = System.Drawing.Color.DimGray;
+            this.label7.Location = new System.Drawing.Point(12, 20);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(240, 15);
+            this.label7.TabIndex = 24;
+            this.label7.Text = "Right-click each item to show more options.";
+            // 
+            // generateReportBtn
+            // 
+            this.generateReportBtn.Location = new System.Drawing.Point(1022, 16);
+            this.generateReportBtn.Name = "generateReportBtn";
+            this.generateReportBtn.Size = new System.Drawing.Size(142, 23);
+            this.generateReportBtn.TabIndex = 25;
+            this.generateReportBtn.Text = "Generate Report";
+            this.generateReportBtn.UseVisualStyleBackColor = true;
+            this.generateReportBtn.Click += new System.EventHandler(this.generateReportBtn_Click);
             // 
             // Id
             // 
@@ -165,92 +251,6 @@ namespace RewardsApp.SQLite.Forms
             this.LastRedeemed.HeaderText = "Last Redeemed";
             this.LastRedeemed.Name = "LastRedeemed";
             this.LastRedeemed.ReadOnly = true;
-            // 
-            // rowContextMenu
-            // 
-            this.rowContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.redeemMenuItem,
-            this.editMenuItem,
-            this.resetMenuItem,
-            this.deleteMenuItem,
-            this.transactionMenuItem});
-            this.rowContextMenu.Name = "rowContextMenu";
-            this.rowContextMenu.ShowImageMargin = false;
-            this.rowContextMenu.Size = new System.Drawing.Size(143, 114);
-            this.rowContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.RowContextMenu_Opening);
-            this.rowContextMenu.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.RowContextMenu_ItemClicked);
-            // 
-            // redeemMenuItem
-            // 
-            this.redeemMenuItem.Name = "redeemMenuItem";
-            this.redeemMenuItem.Size = new System.Drawing.Size(142, 22);
-            this.redeemMenuItem.Text = "&Redeem";
-            // 
-            // editMenuItem
-            // 
-            this.editMenuItem.Name = "editMenuItem";
-            this.editMenuItem.Size = new System.Drawing.Size(142, 22);
-            this.editMenuItem.Text = "&Edit";
-            // 
-            // resetMenuItem
-            // 
-            this.resetMenuItem.Name = "resetMenuItem";
-            this.resetMenuItem.Size = new System.Drawing.Size(142, 22);
-            this.resetMenuItem.Text = "Re&set";
-            // 
-            // deleteMenuItem
-            // 
-            this.deleteMenuItem.Name = "deleteMenuItem";
-            this.deleteMenuItem.Size = new System.Drawing.Size(142, 22);
-            this.deleteMenuItem.Text = "&Delete";
-            // 
-            // transactionMenuItem
-            // 
-            this.transactionMenuItem.Name = "transactionMenuItem";
-            this.transactionMenuItem.Size = new System.Drawing.Size(142, 22);
-            this.transactionMenuItem.Text = "View &Transactions";
-            // 
-            // orderByCbo
-            // 
-            this.orderByCbo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.orderByCbo.FormattingEnabled = true;
-            this.orderByCbo.Items.AddRange(new object[] {
-            "Full Name",
-            "Card No."});
-            this.orderByCbo.Location = new System.Drawing.Point(814, 17);
-            this.orderByCbo.Name = "orderByCbo";
-            this.orderByCbo.Size = new System.Drawing.Size(121, 23);
-            this.orderByCbo.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(752, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 15);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Order By:";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label7.ForeColor = System.Drawing.Color.DimGray;
-            this.label7.Location = new System.Drawing.Point(12, 20);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(240, 15);
-            this.label7.TabIndex = 24;
-            this.label7.Text = "Right-click each item to show more options.";
-            // 
-            // generateReportBtn
-            // 
-            this.generateReportBtn.Location = new System.Drawing.Point(1022, 16);
-            this.generateReportBtn.Name = "generateReportBtn";
-            this.generateReportBtn.Size = new System.Drawing.Size(142, 23);
-            this.generateReportBtn.TabIndex = 25;
-            this.generateReportBtn.Text = "Generate Report";
-            this.generateReportBtn.UseVisualStyleBackColor = true;
-            this.generateReportBtn.Click += new System.EventHandler(this.generateReportBtn_Click);
             // 
             // CustomersForm
             // 

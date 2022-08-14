@@ -25,7 +25,7 @@ namespace RewardsApp.SQLite.Forms
         {
             _customers = await Customer.GetAll();
 
-            _customers = orderByCbo.SelectedIndex == 0
+            _customers = orderByCbo.SelectedIndex == 1
                 ? _customers.OrderBy(customer => $"{customer.LastName}, {customer.FirstName}".Trim()).ToList()
                 : _customers.OrderBy(customer => customer.Card.Number).ToList();
 
@@ -49,6 +49,7 @@ namespace RewardsApp.SQLite.Forms
             var singaporeTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Singapore Standard Time");
             DateTime? localLastRedeemed = customer.LastRedeemed != null ? TimeZoneInfo.ConvertTimeFromUtc((DateTime)customer.LastRedeemed, singaporeTimeZone) : null;
             
+            cells[0].Value = customer.Id;
             cells[1].Value = card.Number;
             cells[2].Value = CultureInfo.CurrentCulture.TextInfo.ToTitleCase($"{customer.LastName}, {customer.FirstName}".ToLower());
             cells[3].Value = customer.Birthdate.ToString("MMM. dd, yyyy");
@@ -134,7 +135,7 @@ namespace RewardsApp.SQLite.Forms
                 RedeemOverrideEditorForm overrideEditor = new();
                 var result = overrideEditor.ShowOverride();
 
-                if (result == RedeemOverrideResult.Success)
+                if (result == PromptResult.Success)
                 {
                     await customer.Reset();
                     PopulateCells(customer, cells);

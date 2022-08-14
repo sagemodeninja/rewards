@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
+using RewardsApp.SQLite.Utilities.Enums;
 
 namespace RewardsApp.SQLite.Forms
 {
@@ -17,16 +18,6 @@ namespace RewardsApp.SQLite.Forms
         private readonly string _authCode;
 
         private string _userJobTitle;
-
-        private bool _isRewardStage;
-
-        private Configuration Configuration { get; set; }
-
-        private Customer CurrentCustomer { get; set; }
-
-        private decimal EarnedPoints { get; set; }
-
-        private decimal ReferrerEarnedPoints { get; set; }
 
         public HomeForm(string authorizationCode)
         {
@@ -46,11 +37,6 @@ namespace RewardsApp.SQLite.Forms
             {
                 MessageBox.Show(ex.ResponseContent);
             }
-
-            Configuration = Configuration.Load();
-            cardNumberTxt.Focus();
-            _isRewardStage = false;
-
         }
 
         private async Task<AuthProvider> RequestCodeTokenProviderAsync()
@@ -93,7 +79,6 @@ namespace RewardsApp.SQLite.Forms
                     cardMenuItem.Enabled = true;
                     customerMenuItem.Enabled = true;
                     configurationMenuItem.Enabled = true;
-                    cardNumberTxt.Enabled = true;
                     break;
                 case "administrator":
                     cardMenuItem.Enabled = true;
@@ -103,141 +88,79 @@ namespace RewardsApp.SQLite.Forms
                 case "cashier":
                     cardMenuItem.Enabled = true;
                     customerMenuItem.Enabled = true;
-                    cardNumberTxt.Enabled = true;
                     break;
             }
         }
 
-        private async void CardNumberTxt_KeyPress(object sender, KeyPressEventArgs e)
+        private void RegisterCustomerCell_ActionInvoked(object sender, EventArgs e)
         {
-            if (e.KeyChar != 13)
-                return;
+            var prompt = new CardNumberForm();
+            var result = prompt.ShowOverride();
 
-            var cardNumber = cardNumberTxt.Text;
-            var card = await Card.GetByNumber(cardNumber);
+            if(result == PromptResult.Failed) return;
 
-            if(card is null)
-            {
-                MessageBox.Show("Card not registered!");
-                return;
-            }
+            CustomerEditorForm customerEditor = new(prompt.SelectedCard);
+            customerEditor.ShowDialog();
+        }
 
+        private void AddPointsCell_ActionInvoked(object sender, EventArgs e)
+        {
+            var prompt = new CardNumberForm();
+            var result = prompt.ShowOverride();
+
+            if (result == PromptResult.Failed) return;
+
+            var card = prompt.SelectedCard;
             var customer = card.Customer;
+
             if (customer is null)
             {
                 CustomerEditorForm customerEditor = new(card);
-                customerEditor.OnCreated(SwitchToRewardStage);
+                customerEditor.OnCreated(newCustomer => customer = newCustomer);
                 customerEditor.ShowDialog();
-                totalAmountTxt.Focus();
             }
-            else
-            {
-                SwitchToRewardStage(customer);
-            }
+            
+            var addPointsForm = new AddPointsForm(customer);
+            addPointsForm.ShowDialog();
         }
 
-        private void SwitchToRewardStage(Customer customer)
+        private void RedeemPointsCell_ActionInvoked(object sender, EventArgs e)
         {
-            CurrentCustomer = customer;
+            var prompt = new CardNumberForm();
+            var result = prompt.ShowOverride();
 
-            cardNumberStagePnl.Visible = false;
-            customerNameLbl.Text = $"{customer.LastName}, {customer.FirstName}";
+            if (result == PromptResult.Failed) return;
 
-            currentPointsTxt.Text = customer.Points.ToString("#,##0.00");
-            percentageTxt.Text = $"{Configuration.PointsPercentage:0.00}%";
-            earnedPointsTxt.Text = "0.00";
-            totalPointsTxt.Text = customer.Points.ToString("#,##0.00");
+            var card = prompt.SelectedCard;
+            var customer = card.Customer;
 
-            rewardStagePnl.Visible = true;
-            totalAmountTxt.Focus();
-
-            _isRewardStage = true;
+            RedeemPointsEditorForm editor = new(customer);
+            editor.ShowDialog();
         }
 
-        private void SwitchToCardNumberStage()
+        private void CheckPointsCell_ActionInvoked(object sender, EventArgs e)
         {
-            // Clear...
-            cardNumberTxt.Clear();
-            customerNameLbl.Text = "";
-            currentPointsTxt.Clear();
-            percentageTxt.Clear();
-            earnedPointsTxt.Clear();
-            totalAmountTxt.Clear();
-            /**/
-            rewardStagePnl.Visible = false;
-            cardNumberStagePnl.Visible = true;
-            cardNumberTxt.Focus();
-            /**/
-            CurrentCustomer = null;
-            EarnedPoints = 0;
-            /**/
-            _isRewardStage = false;
+            MessageBox.Show("Feature not supported yet!");
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            if (ModifierKeys == Keys.None && keyData == Keys.Escape && _isRewardStage)
-            {
-                SwitchToCardNumberStage();
-                return true;
-            }
-
-            if (keyData == (Keys.Alt| Keys.M))
-            {
+            if (keyData == (Keys.Alt | Keys.M)) 
                 ShowOptions();
-                return true;
-            }
 
             return base.ProcessDialogKey(keyData);
         }
 
-        private void TotalAmountTxt_TextChanged(object sender, EventArgs e)
-        {
-            var totalAmountString = totalAmountTxt.Text;
-            if (string.IsNullOrWhiteSpace(totalAmountString))
-                totalAmountString = "0";
-
-            var totalAmount = decimal.Parse(totalAmountString);
-            EarnedPoints = totalAmount * ((decimal)Configuration.PointsPercentage / 100);
-            ReferrerEarnedPoints = totalAmount * ((decimal)Configuration.ReferrerPointsPercentage / 100);
-            var totalPoints = CurrentCustomer.Points + EarnedPoints;
-
-            earnedPointsTxt.Text = EarnedPoints.ToString("#,##0.00");
-            totalPointsTxt.Text = totalPoints.ToString("#,##0.00");
-        }
-
-        private async void TotalAmountTxt_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar != 13)
-                return;
-
-            try
-            {
-                await CurrentCustomer.AddPoints(EarnedPoints);
-
-                if(CurrentCustomer.ReferrerId is not null)
-                    await Customer.AddPoints(CurrentCustomer.ReferrerId ?? 0, ReferrerEarnedPoints);
-
-                SwitchToCardNumberStage();
-                MessageBox.Show("Points added to customer.");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
         private void OptionsBtn_Click(object sender, EventArgs e)
-        {
-            ShowOptions();
-        }
+            => ShowOptions();
 
         private void ShowOptions()
         {
             var x = optionsMenu.Width - optionsBtn.Width;
             var y = optionsBtn.Height;
+            var menuPosition = new Point(-x, y);
 
-            optionsMenu.Show(optionsBtn, new Point(-x, y));
+            optionsMenu.Show(optionsBtn, menuPosition);
         }
 
         private void OptionsMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -254,12 +177,9 @@ namespace RewardsApp.SQLite.Forms
             if (menuItem == configurationMenuItem)
                 form = new ConfigurationsForm(_userJobTitle);
 
-            if(form is null)
-                return;
+            if(form is null) return;
 
             form.ShowDialog();
-            Configuration = Configuration.Load();
-            SwitchToCardNumberStage();
         }
 
         private void HomeForm_FormClosed(object sender, FormClosedEventArgs e)

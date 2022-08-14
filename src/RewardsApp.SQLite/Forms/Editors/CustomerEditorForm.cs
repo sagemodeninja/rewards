@@ -3,6 +3,8 @@ using RewardsApp.SQLite.Utilities;
 using System;
 using System.Windows.Forms;
 
+// ReSharper disable LocalizableElement
+
 namespace RewardsApp.SQLite.Forms.Editors
 {
     public partial class CustomerEditorForm : Form
@@ -17,10 +19,7 @@ namespace RewardsApp.SQLite.Forms.Editors
 
         public Action<Customer> CustomerEditedAction { get; private set; }
 
-        public CustomerEditorForm()
-        {
-            InitializeComponent();
-        }
+        private CustomerEditorForm() => InitializeComponent();
 
         public CustomerEditorForm(Card card) : this()
         {
@@ -32,9 +31,6 @@ namespace RewardsApp.SQLite.Forms.Editors
         {
             _isEdit = true;
             _customer = customer;
-
-            Text = "Edit Customer";
-            registerBtn.Text = "Save";
         }
 
         private async void CustomerEditorForm_Load(object sender, EventArgs e)
@@ -57,6 +53,9 @@ namespace RewardsApp.SQLite.Forms.Editors
                 birthDateDTP.Value = _customer.Birthdate;
                 contactNumberTxt.Text = _customer.ContactNumber;
                 emailTxt.Text = _customer.Email;
+
+                Text = "Edit Customer";
+                registerBtn.Text = "Save";
             }
             else
             {

@@ -62,10 +62,10 @@ namespace RewardsApp.SQLite.Forms.Editors
                 RedeemOverrideEditorForm overrideEditor = new();
                 var result = overrideEditor.ShowOverride();
 
-                if (result == RedeemOverrideResult.Success)
+                if (result == PromptResult.Success)
                 {
                     await _customer.RedeemPoints(amount);
-                    _onRedeemedAction.Invoke(_customer);
+                    _onRedeemedAction?.Invoke(_customer);
                     Close();
                 }
                 else

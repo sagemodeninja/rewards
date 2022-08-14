@@ -6,17 +6,17 @@ namespace RewardsApp.SQLite.Forms.Editors
 {
     public partial class RedeemOverrideEditorForm : Form
     {
-        private RedeemOverrideResult _result;
+        private PromptResult? _result;
 
         public RedeemOverrideEditorForm()
         {
             InitializeComponent();
         }
 
-        public RedeemOverrideResult ShowOverride()
+        public PromptResult ShowOverride()
         {
             ShowDialog();
-            return _result;
+            return _result ?? PromptResult.Failed;
         }
 
         private void OverridePasswordTxt_KeyPress(object sender, KeyPressEventArgs e)
@@ -30,7 +30,7 @@ namespace RewardsApp.SQLite.Forms.Editors
             var configuration = Configuration.Load();
             var overrideHash = configuration.OverridePassword;
 
-            _result = challengeHash.Equals(overrideHash) ? RedeemOverrideResult.Success : RedeemOverrideResult.Failed;
+            _result = challengeHash.Equals(overrideHash) ? PromptResult.Success : PromptResult.Failed;
             Close();
         }
 

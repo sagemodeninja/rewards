@@ -96,7 +96,7 @@ namespace RewardsApp.SQLite.Entities
             Points += points;
 
             // Transaction
-            await RecordTransaction(TransactionType.EarnPoints, points, context);
+            await RecordTransaction(TransactionType.EarnPoints, points);
 
             await context.SaveChangesAsync();
         }
@@ -109,7 +109,7 @@ namespace RewardsApp.SQLite.Entities
             customer.Points += points;
             
             // Transaction
-            await customer.RecordTransaction(TransactionType.EarnPoints, points, context);
+            await customer.RecordTransaction(TransactionType.EarnPoints, points);
 
             await context.SaveChangesAsync();
         }
@@ -124,13 +124,14 @@ namespace RewardsApp.SQLite.Entities
             LastRedeemedPoints = points;
             
             // Transaction
-            await RecordTransaction(TransactionType.RedeemPoints, points, context);
+            await RecordTransaction(TransactionType.RedeemPoints, points);
 
             await context.SaveChangesAsync();
         }
 
-        private async Task RecordTransaction(TransactionType transactionType, decimal points, RewardsAppContext context)
+        private async Task RecordTransaction(TransactionType transactionType, decimal points)
         {
+            await using RewardsAppContext context = new();
             var lastTransaction = await context.Transactions
                                                .OrderBy(trans => trans.Id)
                                                .LastOrDefaultAsync();
@@ -152,6 +153,7 @@ namespace RewardsApp.SQLite.Entities
             };
 
             context.Transactions.Add(transaction);
+            await context.SaveChangesAsync();
         }
 
         private async Task RecordResetTransaction()
