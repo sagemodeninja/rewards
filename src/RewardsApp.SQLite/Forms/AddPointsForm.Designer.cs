@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddPointsForm));
             this.rewardStagePnl = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.totalPointsTxt = new System.Windows.Forms.TextBox();
@@ -195,6 +196,7 @@
             this.ClientSize = new System.Drawing.Size(528, 379);
             this.Controls.Add(this.rewardStagePnl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AddPointsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Points";

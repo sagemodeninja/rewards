@@ -77,7 +77,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(209, 15);
             this.label1.TabIndex = 21;
-            this.label1.Text = "Press Esc to cancel.";
+            this.label1.Text = "Press Esc to exit.";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // CheckPointsForm
