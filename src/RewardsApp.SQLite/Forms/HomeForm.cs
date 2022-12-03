@@ -140,14 +140,46 @@ namespace RewardsApp.SQLite.Forms
 
         private void CheckPointsCell_ActionInvoked(object sender, EventArgs e)
         {
-            MessageBox.Show("Feature not supported yet!");
+            var prompt = new CardNumberForm();
+            var result = prompt.ShowOverride();
+
+            if (result == PromptResult.Failed) return;
+
+            var card = prompt.SelectedCard;
+            var customer = card.Customer;
+
+            if (customer is null)
+            {
+                CustomerEditorForm customerEditor = new(card);
+                customerEditor.OnCreated(newCustomer => customer = newCustomer);
+                customerEditor.ShowDialog();
+            }
+
+            var checkPointsForm = new CheckPointsForm(customer);
+            checkPointsForm.ShowDialog();
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
         {
             if (keyData == (Keys.Alt | Keys.M)) 
                 ShowOptions();
-
+            switch(keyData)
+            {
+                case Keys.F1:
+                    RegisterCustomerCell_ActionInvoked(null, null);
+                    break;
+                case Keys.F3:
+                    RedeemPointsCell_ActionInvoked(null, null);
+                    break;
+                case Keys.F4:
+                    CheckPointsCell_ActionInvoked(null, null);
+                    break;
+                case Keys.F5:
+                    AddPointsCell_ActionInvoked(null, null);
+                    break;
+                default:
+                    break;
+            }
             return base.ProcessDialogKey(keyData);
         }
 
