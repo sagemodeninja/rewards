@@ -111,7 +111,7 @@ namespace RewardsApp.SQLite.Forms.Editors
                     await referrer.AddPoints(configuration.ReferralPoints);
                 }
 
-                CustomerCreatedAction.Invoke(customer);
+                CustomerCreatedAction?.Invoke(customer);
                 Close();
             }
             catch (Exception ex)

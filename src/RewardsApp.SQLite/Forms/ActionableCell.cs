@@ -70,15 +70,6 @@ namespace RewardsApp.SQLite.Forms
 
         private void InvokeAction() => _actionInvoked?.Invoke(this, EventArgs.Empty);
 
-        protected override bool ProcessDialogKey(Keys keyData)
-        {
-            if (keyData != _actionKey)
-                return base.ProcessDialogKey(keyData);
-
-            InvokeAction();
-            return true;
-        }
-
         private static Color DarkenColor(Color color, float percent)
         {
             var r = (int)(color.R * percent);

@@ -167,6 +167,7 @@
             // totalAmountTxt
             // 
             this.totalAmountTxt.Location = new System.Drawing.Point(114, 102);
+            this.totalAmountTxt.MaxLength = 7;
             this.totalAmountTxt.Name = "totalAmountTxt";
             this.totalAmountTxt.Size = new System.Drawing.Size(241, 23);
             this.totalAmountTxt.TabIndex = 4;

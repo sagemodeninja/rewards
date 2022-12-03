@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Forms;
 using RewardsApp.SQLite.Utilities.Enums;
+using System.Media;
 
 namespace RewardsApp.SQLite.Forms.Editors
 {
@@ -27,6 +28,7 @@ namespace RewardsApp.SQLite.Forms.Editors
         private void AmountTxt_TextChanged(object sender, EventArgs e)
         {
             var amountString = amountTxt.Text;
+
             if (string.IsNullOrWhiteSpace(amountString))
                 amountString = "0";
 
@@ -36,6 +38,9 @@ namespace RewardsApp.SQLite.Forms.Editors
             {
                 errorProvider1.SetError(amountTxt, "Amount should not be more than current points.");
                 remainingPointsTxt.Text = "-";
+
+                SystemSounds.Exclamation.Play();
+
                 return;
             }
             
@@ -43,6 +48,9 @@ namespace RewardsApp.SQLite.Forms.Editors
             {
                 errorProvider1.SetError(amountTxt, "Amount should be more than 0.");
                 remainingPointsTxt.Text = "-";
+
+                SystemSounds.Exclamation.Play();
+
                 return;
             }
 
