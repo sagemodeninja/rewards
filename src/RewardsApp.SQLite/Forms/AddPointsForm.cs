@@ -38,7 +38,7 @@ namespace RewardsApp.SQLite.Forms
         private void TotalAmountTxt_TextChanged(object sender, EventArgs e)
         {
             var totalAmountString = totalAmountTxt.Text;
-
+            totalAmountTxt.MaxLength = 7;
             if (string.IsNullOrWhiteSpace(totalAmountString))
                 totalAmountString = "0";
 
