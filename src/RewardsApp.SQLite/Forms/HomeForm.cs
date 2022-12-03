@@ -1,7 +1,6 @@
 ﻿using AgilityFramework.Http;
 using AgilityFramework.Http.Exceptions;
 using AgilityFramework.Http.Tokens;
-using RewardsApp.SQLite.Entities;
 using RewardsApp.SQLite.Forms.Editors;
 using RewardsApp.SQLite.Utilities;
 using System;
@@ -163,10 +162,14 @@ namespace RewardsApp.SQLite.Forms
         {
             if (keyData == (Keys.Alt | Keys.M)) 
                 ShowOptions();
+
             switch(keyData)
             {
                 case Keys.F1:
                     RegisterCustomerCell_ActionInvoked(null, null);
+                    break;
+                case Keys.F2:
+                    AddPointsCell_ActionInvoked(null, null);
                     break;
                 case Keys.F3:
                     RedeemPointsCell_ActionInvoked(null, null);
@@ -174,12 +177,8 @@ namespace RewardsApp.SQLite.Forms
                 case Keys.F4:
                     CheckPointsCell_ActionInvoked(null, null);
                     break;
-                case Keys.F5:
-                    AddPointsCell_ActionInvoked(null, null);
-                    break;
-                default:
-                    break;
             }
+
             return base.ProcessDialogKey(keyData);
         }
 

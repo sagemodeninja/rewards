@@ -136,7 +136,7 @@ namespace RewardsApp.SQLite.Forms
             // 
             // addPointsCell
             // 
-            this.addPointsCell.ActionKey = System.Windows.Forms.Keys.F5;
+            this.addPointsCell.ActionKey = System.Windows.Forms.Keys.F2;
             this.addPointsCell.ActionText = "Add Points";
             this.addPointsCell.BackColor = System.Drawing.Color.Honeydew;
             this.addPointsCell.Location = new System.Drawing.Point(285, 57);

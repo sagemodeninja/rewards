@@ -70,6 +70,7 @@ namespace RewardsApp.SQLite.Forms.Editors
             // amountTxt
             // 
             this.amountTxt.Location = new System.Drawing.Point(90, 146);
+            this.amountTxt.MaxLength = 7;
             this.amountTxt.Name = "amountTxt";
             this.amountTxt.PlaceholderText = "Enter amount of points to redeem...";
             this.amountTxt.Size = new System.Drawing.Size(241, 23);
