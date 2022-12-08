@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # macOS
 .DS_Store
+/src/RewardsApp.SQLite/appsettings.json
