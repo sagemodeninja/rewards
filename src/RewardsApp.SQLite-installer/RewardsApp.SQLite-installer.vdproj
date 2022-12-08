@@ -166,15 +166,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Rewards App"
-        "ProductCode" = "8:{777FA76F-8E37-4124-81FC-091AE0265F38}"
-        "PackageCode" = "8:{3DC021E5-09CB-4A6D-9C31-508223279F6E}"
+        "ProductCode" = "8:{A11D0178-1447-450C-B680-595A4583D6C2}"
+        "PackageCode" = "8:{3D78C006-DEE9-4A85-AD36-28FA3F092DB1}"
         "UpgradeCode" = "8:{D40363BA-CB28-4EE6-A777-DF1DF8A929A4}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.2.4"
         "Manufacturer" = "8:Shibumi Software"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -716,7 +716,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E65C693FEF604FECAA9D21F12D091337"
             {
-            "SourcePath" = "8:..\\RewardsApp.SQLite\\obj\\x64\\Release\\net5.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\RewardsApp.SQLite\\obj\\x64\\Release\\net6.0-windows10.0.17763.0\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_19DB6C11D04B4DD09AAA9C3868F32535"
